@@ -1,0 +1,5 @@
+Resources:
+  Website:
+    Type: Cfn101::S3::Website::MODULE
+    Properties:
+      BucketName: ""

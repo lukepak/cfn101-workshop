@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: Create an S3-hosted website
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: The bucket name. Leave blank to use a generated bucket name.
+    Default: ""
+
+Conditions:
+  BucketNameIsBlank: !Equals
+    - !Ref BucketName
+    - ""
+
+Resources:
+  LogBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !If
+        - BucketNameIsBlank
+        - !Ref AWS::NoValue
+        - !Sub ${BucketName}-logs
+
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: PublicRead
+      BucketName: !If
+        - BucketNameIsBlank
+        - !Ref AWS::NoValue
+        - !Ref BucketName
+      LoggingConfiguration:
+        DestinationBucketName: !Ref LogBucket
+      WebsiteConfiguration:
+        ErrorDocument: error.html
+        IndexDocument: index.html
+
+Outputs:
+  BucketName:
+    Value: !Ref Bucket
+
+  LogBucketName:
+    Value: !Ref LogBucket
+
+  URL:
+    Value: !GetAtt Bucket.WebsiteURL
