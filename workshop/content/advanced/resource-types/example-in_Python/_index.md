@@ -1,7 +1,7 @@
 ---
-title: 'Example in Python'
+title: 'Advanced example in Python'
 date: 2021-11-16T20:55:12Z
-weight: 320
+weight: 330
 ---
 
 ### Overview
